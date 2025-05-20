@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -8,6 +7,14 @@ import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
+import { 
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger
+} from "@/components/ui/dropdown-menu";
+import DepartmentSettings from "@/components/DepartmentSettings";
+import { Users, Plus, Trash2, Edit, Link } from "lucide-react";
 
 export default function Settings() {
   const { toast } = useToast();
@@ -101,8 +108,9 @@ export default function Settings() {
       <h1 className="text-3xl font-bold mb-6">Настройки</h1>
 
       <Tabs defaultValue={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid grid-cols-1 md:grid-cols-3 mb-6">
+        <TabsList className="grid grid-cols-1 md:grid-cols-4 mb-6">
           <TabsTrigger value="profile">Профиль</TabsTrigger>
+          <TabsTrigger value="departments">Департаменты</TabsTrigger>
           <TabsTrigger value="integrations">Интеграции</TabsTrigger>
           <TabsTrigger value="notifications">Уведомления</TabsTrigger>
         </TabsList>
@@ -187,6 +195,10 @@ export default function Settings() {
               </form>
             </CardContent>
           </Card>
+        </TabsContent>
+
+        <TabsContent value="departments">
+          <DepartmentSettings />
         </TabsContent>
 
         <TabsContent value="integrations">
