@@ -1,5 +1,6 @@
 
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import {
   Table,
   TableBody,
@@ -9,12 +10,13 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
-import { Search } from "lucide-react";
+import { Plus, Search } from "lucide-react";
 
 // Временные данные для демонстрации
 const clientsData = [
@@ -106,7 +108,7 @@ interface ClientDetailsProps {
   client: Client;
 }
 
-// Компонент для отображения детальной информации о клиенте
+// Компонент для отображения детальной информации о клиенте в диалоге
 const ClientDetails = ({ client }: ClientDetailsProps) => {
   return (
     <div className="px-4 py-2">
@@ -159,40 +161,12 @@ const ClientDetails = ({ client }: ClientDetailsProps) => {
         </div>
       </div>
       
-      <div className="mt-6">
-        <h3 className="text-lg font-medium mb-2">История обращений</h3>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>ID</TableHead>
-              <TableHead>Тема</TableHead>
-              <TableHead>Статус</TableHead>
-              <TableHead>Дата</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            <TableRow>
-              <TableCell>T-1001</TableCell>
-              <TableCell>Вопрос по оплате</TableCell>
-              <TableCell>
-                <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded-md text-xs font-medium">
-                  Новый
-                </span>
-              </TableCell>
-              <TableCell>19.05.2025 09:30</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell>T-985</TableCell>
-              <TableCell>Консультация по товару</TableCell>
-              <TableCell>
-                <span className="bg-green-100 text-green-800 px-2 py-1 rounded-md text-xs font-medium">
-                  Закрыт
-                </span>
-              </TableCell>
-              <TableCell>15.05.2025 14:22</TableCell>
-            </TableRow>
-          </TableBody>
-        </Table>
+      <div className="mt-6 flex justify-center">
+        <Button asChild>
+          <Link to={`/clients/${client.id}`}>
+            Перейти к профилю клиента
+          </Link>
+        </Button>
       </div>
     </div>
   );
@@ -239,7 +213,12 @@ export default function Clients() {
 
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-3xl font-bold mb-6">База клиентов</h1>
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-3xl font-bold">База клиентов</h1>
+        <Button>
+          <Plus className="h-4 w-4 mr-2" /> Добавить клиента
+        </Button>
+      </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-8">
         <div className="lg:col-span-3">
@@ -263,44 +242,57 @@ export default function Clients() {
                   <TableHead>Теги</TableHead>
                   <TableHead>Обращения</TableHead>
                   <TableHead>Последний контакт</TableHead>
+                  <TableHead></TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {filteredClients.map((client) => (
-                  <Dialog key={client.id}>
-                    <DialogTrigger asChild>
-                      <TableRow className="cursor-pointer hover:bg-muted/50">
-                        <TableCell className="font-medium">{client.id}</TableCell>
-                        <TableCell>{client.name}</TableCell>
-                        <TableCell>
-                          <div>{client.email}</div>
-                          <div className="text-sm text-muted-foreground">{client.phone}</div>
-                        </TableCell>
-                        <TableCell>
-                          <div className="flex flex-wrap gap-1">
-                            {client.tags.map((tag) => (
-                              <Badge key={tag} variant="outline" className="text-xs">
-                                {tag}
-                              </Badge>
-                            ))}
-                          </div>
-                        </TableCell>
-                        <TableCell>{client.ticketsCount}</TableCell>
-                        <TableCell>{formatDate(client.lastContact)}</TableCell>
-                      </TableRow>
-                    </DialogTrigger>
-                    <DialogContent className="max-w-3xl">
-                      <DialogHeader>
-                        <DialogTitle>Клиент: {client.name}</DialogTitle>
-                      </DialogHeader>
-                      <ClientDetails client={client} />
-                    </DialogContent>
-                  </Dialog>
+                  <TableRow key={client.id} className="cursor-pointer hover:bg-muted/50">
+                    <TableCell className="font-medium">{client.id}</TableCell>
+                    <TableCell>{client.name}</TableCell>
+                    <TableCell>
+                      <div>{client.email}</div>
+                      <div className="text-sm text-muted-foreground">{client.phone}</div>
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex flex-wrap gap-1">
+                        {client.tags.map((tag) => (
+                          <Badge key={tag} variant="outline" className="text-xs">
+                            {tag}
+                          </Badge>
+                        ))}
+                      </div>
+                    </TableCell>
+                    <TableCell>{client.ticketsCount}</TableCell>
+                    <TableCell>{formatDate(client.lastContact)}</TableCell>
+                    <TableCell>
+                      <div className="flex space-x-2">
+                        <Dialog>
+                          <DialogTrigger asChild>
+                            <Button variant="ghost" size="sm">
+                              Быстрый просмотр
+                            </Button>
+                          </DialogTrigger>
+                          <DialogContent className="max-w-3xl">
+                            <DialogHeader>
+                              <DialogTitle>Клиент: {client.name}</DialogTitle>
+                            </DialogHeader>
+                            <ClientDetails client={client} />
+                          </DialogContent>
+                        </Dialog>
+                        <Button variant="outline" size="sm" asChild>
+                          <Link to={`/clients/${client.id}`}>
+                            Подробнее
+                          </Link>
+                        </Button>
+                      </div>
+                    </TableCell>
+                  </TableRow>
                 ))}
                 
                 {filteredClients.length === 0 && (
                   <TableRow>
-                    <TableCell colSpan={6} className="text-center py-4">
+                    <TableCell colSpan={7} className="text-center py-4">
                       Нет клиентов, соответствующих критериям поиска
                     </TableCell>
                   </TableRow>

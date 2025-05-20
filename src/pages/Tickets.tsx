@@ -1,5 +1,6 @@
 
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import {
   Table,
   TableBody,
@@ -9,6 +10,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import { 
   Select,
   SelectContent,
@@ -17,6 +19,7 @@ import {
   SelectValue 
 } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
+import { Plus } from "lucide-react";
 
 // Временные данные для демонстрации
 const ticketsData = [
@@ -190,7 +193,14 @@ export default function Tickets() {
 
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-3xl font-bold mb-6">Управление тикетами</h1>
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-3xl font-bold">Управление тикетами</h1>
+        <Button asChild>
+          <Link to="/tickets/new">
+            <Plus className="h-4 w-4 mr-2" /> Создать тикет
+          </Link>
+        </Button>
+      </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
         <div>
@@ -244,6 +254,7 @@ export default function Tickets() {
               <TableHead>Статус</TableHead>
               <TableHead>Ответственный</TableHead>
               <TableHead>Дата</TableHead>
+              <TableHead></TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -291,11 +302,18 @@ export default function Tickets() {
                     </Select>
                   </TableCell>
                   <TableCell>{formatDate(ticket.date)}</TableCell>
+                  <TableCell>
+                    <Button variant="ghost" size="sm" asChild>
+                      <Link to={`/tickets/${ticket.id}`}>
+                        Просмотреть
+                      </Link>
+                    </Button>
+                  </TableCell>
                 </TableRow>
               ))
             ) : (
               <TableRow>
-                <TableCell colSpan={7} className="text-center py-4">
+                <TableCell colSpan={8} className="text-center py-4">
                   Нет тикетов, соответствующих критериям поиска
                 </TableCell>
               </TableRow>

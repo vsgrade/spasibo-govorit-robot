@@ -9,7 +9,10 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Inbox, MessageSquare, Users } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
+import { ArrowRight, Inbox, MessageSquare, Plus, Users } from "lucide-react";
+import AnalyticsCharts from "@/components/AnalyticsCharts";
 
 // Временные данные для демонстрации
 const recentTickets = [
@@ -92,7 +95,14 @@ export default function Dashboard() {
 
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-3xl font-bold mb-6">Панель управления</h1>
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-3xl font-bold">Панель управления</h1>
+        <Button asChild>
+          <Link to="/tickets/new">
+            <Plus className="h-4 w-4 mr-2" /> Создать тикет
+          </Link>
+        </Button>
+      </div>
       
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         <Card>
@@ -134,8 +144,13 @@ export default function Dashboard() {
       </div>
 
       <Card className="mb-8">
-        <CardHeader>
+        <CardHeader className="flex flex-row items-center justify-between">
           <CardTitle>Недавние обращения</CardTitle>
+          <Button variant="ghost" size="sm" asChild>
+            <Link to="/tickets">
+              Все тикеты <ArrowRight className="h-4 w-4 ml-1" />
+            </Link>
+          </Button>
         </CardHeader>
         <CardContent>
           <Table>
@@ -147,6 +162,7 @@ export default function Dashboard() {
                 <TableHead>Источник</TableHead>
                 <TableHead>Статус</TableHead>
                 <TableHead>Дата</TableHead>
+                <TableHead></TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -166,12 +182,21 @@ export default function Dashboard() {
                     </span>
                   </TableCell>
                   <TableCell>{formatDate(ticket.date)}</TableCell>
+                  <TableCell>
+                    <Button variant="ghost" size="sm" asChild>
+                      <Link to={`/tickets/${ticket.id}`}>
+                        Просмотреть
+                      </Link>
+                    </Button>
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>
           </Table>
         </CardContent>
       </Card>
+      
+      <AnalyticsCharts />
     </div>
   );
 }
