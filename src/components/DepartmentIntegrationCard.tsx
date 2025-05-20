@@ -1,11 +1,11 @@
-
 import { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardFooter } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Vk, Telegram, WhatsApp, Edit, Trash2, X, Check } from "lucide-react";
+import { Edit, Trash2, X, Check } from "lucide-react";
+import { VKIcon, TelegramIcon, WhatsAppIcon } from "./settings/IntegrationIcons";
 
 interface Integration {
   id: string;
@@ -42,11 +42,11 @@ export default function DepartmentIntegrationCard({
   const renderIcon = () => {
     switch (integration.type) {
       case 'vk':
-        return <Vk className="h-5 w-5 text-blue-600" />;
+        return <VKIcon />;
       case 'telegram':
-        return <Telegram className="h-5 w-5 text-blue-500" />;
+        return <TelegramIcon />;
       case 'whatsapp':
-        return <WhatsApp className="h-5 w-5 text-green-600" />;
+        return <WhatsAppIcon />;
     }
   };
 

@@ -13,7 +13,8 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { useToast } from "@/hooks/use-toast";
-import { Users, Plus, Trash2, Edit, Link, ChevronDown, ChevronRight, Vk, Telegram, WhatsApp } from "lucide-react";
+import { Users, Plus, Trash2, Edit, Link, ChevronDown, ChevronRight } from "lucide-react";
+import { VKIcon, TelegramIcon, WhatsAppIcon } from "./settings/IntegrationIcons";
 import DepartmentIntegrationCard from "./DepartmentIntegrationCard";
 
 // Типы для департаментов и интеграций
@@ -387,21 +388,21 @@ export default function DepartmentSettings() {
                             size="sm"
                             onClick={() => handleAddIntegration(department.id, 'vk')}
                           >
-                            <Vk className="h-4 w-4 mr-1" /> VK
+                            <VKIcon /> VK
                           </Button>
                           <Button 
                             variant="outline" 
                             size="sm"
                             onClick={() => handleAddIntegration(department.id, 'telegram')}
                           >
-                            <Telegram className="h-4 w-4 mr-1" /> Telegram
+                            <TelegramIcon /> Telegram
                           </Button>
                           <Button 
                             variant="outline" 
                             size="sm"
                             onClick={() => handleAddIntegration(department.id, 'whatsapp')}
                           >
-                            <WhatsApp className="h-4 w-4 mr-1" /> WhatsApp
+                            <WhatsAppIcon /> WhatsApp
                           </Button>
                         </div>
                       </div>
