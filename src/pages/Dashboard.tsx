@@ -145,7 +145,7 @@ export default function Dashboard() {
 
       <Card className="mb-8">
         <CardHeader className="flex flex-row items-center justify-between">
-          <CardTitle>Недавние обращения</CardTitle>
+          <CardTitle>Недавние обращения КЛИЕНТОВ</CardTitle>
           <Button variant="ghost" size="sm" asChild>
             <Link to="/tickets">
               Все тикеты <ArrowRight className="h-4 w-4 ml-1" />
