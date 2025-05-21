@@ -3,9 +3,9 @@ import { Suspense, lazy } from "react";
 import { BrowserRouter, Navigate, Route, Routes, Link, Outlet, useLocation } from "react-router-dom"; // Добавлены Link, Outlet, useLocation
 
 // Ваши UI компоненты и утилиты
-import { Button } from "@/components/ui/button"; // Предполагается, что Button используется в Header или MobileSheet
-import { ScrollArea } from "@/components/ui/scroll-area"; // Предполагается, что используется в Sidebar
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"; // Для мобильного меню
+import { Button } from "@/components/ui/button";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import {
   TooltipProvider,
 } from "@/components/ui/tooltip";
@@ -23,9 +23,9 @@ import {
   Briefcase,    // Integrations
   Ticket,       // <--- НОВАЯ ИКОНКА ДЛЯ ТИКЕТОВ
   PanelLeft,    // Для мобильного меню
-  Search,       // Пример иконки для поиска в Header
-  Bell,         // Пример иконки для уведомлений в Header
-  CircleUser,   // Пример иконки для профиля пользователя в Header
+  // Search,       // Пример иконки для поиска в Header (если нужна)
+  // Bell,         // Пример иконки для уведомлений в Header (если нужна)
+  // CircleUser,   // Пример иконки для профиля пользователя в Header (если нужна)
 } from "lucide-react";
 
 // Импорт ваших существующих страниц (оставляем как было)
@@ -74,13 +74,12 @@ function Layout() {
       <div className="flex h-full max-h-screen flex-col gap-2">
         <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
           <Link to="/" className="flex items-center gap-2 font-semibold">
-            {/* Можете добавить логотип или иконку приложения */}
+             <Home className="h-6 w-6" /> {/* Или ваша иконка приложения */}
             <span className="">{appConfig.appName || "Панель"}</span>
           </Link>
-          {/* Можно добавить кнопку для уведомлений, если нужно */}
         </div>
         <div className="flex-1">
-          <ScrollArea className="h-full"> {/* Обертка для прокрутки, если меню длинное */}
+          <ScrollArea className="h-full">
             <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
               {navigation.map((item) => (
                 !item.disabled && (
@@ -100,7 +99,6 @@ function Layout() {
             </nav>
           </ScrollArea>
         </div>
-        {/* Можно добавить футер для сайдбара, если нужно */}
       </div>
     </div>
   );
@@ -118,14 +116,14 @@ function Layout() {
           <span className="sr-only">Открыть навигационное меню</span>
         </Button>
       </SheetTrigger>
-      <SheetContent side="left" className="flex flex-col p-0"> {/* Убрал padding для ScrollArea */}
+      <SheetContent side="left" className="flex flex-col p-0">
         <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
             <Link to="/" className="flex items-center gap-2 font-semibold">
-              {/* Можете добавить логотип или иконку приложения */}
+              <Home className="h-6 w-6" /> {/* Или ваша иконка приложения */}
               <span className="">{appConfig.appName || "Панель"}</span>
             </Link>
         </div>
-        <ScrollArea className="flex-1"> {/* Обертка для прокрутки */}
+        <ScrollArea className="flex-1">
             <nav className="grid gap-2 p-4 text-lg font-medium">
             {navigation.map((item) => (
                 !item.disabled && (
@@ -137,7 +135,7 @@ function Layout() {
                     item.current ? "bg-muted text-primary" : "text-muted-foreground"
                     )}
                 >
-                    <item.icon className="h-5 w-5" /> {/* Немного увеличил иконку для мобильных */}
+                    <item.icon className="h-5 w-5" />
                     {item.name}
                 </Link>
                 )
@@ -155,31 +153,9 @@ function Layout() {
         <header className="flex h-14 items-center gap-4 border-b bg-muted/40 px-4 lg:h-[60px] lg:px-6">
           <MobileSheetMenu />
           <div className="w-full flex-1">
-            {/* Здесь может быть поиск или другие элементы хедера */}
-            {/* <form>
-              <div className="relative">
-                <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-                <Input type="search" placeholder="Поиск..." className="w-full appearance-none bg-background pl-8 shadow-none md:w-2/3 lg:w-1/3" />
-              </div>
-            </form> */}
+            {/* Поиск и другие элементы хедера, если нужны */}
           </div>
-          {/* Здесь может быть кнопка профиля пользователя */}
-          {/* <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="secondary" size="icon" className="rounded-full">
-                <CircleUser className="h-5 w-5" />
-                <span className="sr-only">Открыть меню пользователя</span>
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuLabel>Мой Аккаунт</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem>Настройки</DropdownMenuItem>
-              <DropdownMenuItem>Поддержка</DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem>Выйти</DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu> */}
+          {/* Профиль пользователя, если нужен */}
         </header>
         <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
           <Outlet />
@@ -227,7 +203,7 @@ function App() {
                 <Route path="*" element={<Navigate to={defaultRedirectPath} replace />} />
               </Route>
             </Routes>
-            <Toaster /> {/* Убедитесь, что Toaster (если используется для уведомлений) здесь */}
+            <Toaster />
           </TooltipProvider>
         </ThemeProvider>
       </Suspense>
