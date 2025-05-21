@@ -1,20 +1,20 @@
 // src/App.tsx
 import { Suspense, lazy } from "react";
-import { BrowserRouter, Navigate, Route, Routes, Link, Outlet, useLocation } from "react-router-dom"; // Добавлены Link, Outlet, useLocation
+import { BrowserRouter, Navigate, Route, Routes, Link, Outlet, useLocation } from "react-router-dom";
 
-// Ваши UI компоненты и утилиты
+// Ваши UI компоненты и утилиты (оставляем то, что было в вашем файле)
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import {
   TooltipProvider,
 } from "@/components/ui/tooltip";
-import { ThemeProvider } from "@/components/providers/theme-provider";
+import { ThemeProvider } from "@/components/providers/theme-provider"; // Этот импорт был в вашем App.tsx
 import { Toaster } from "@/components/ui/sonner";
 import { appConfig } from "@/config/app";
 import { cn } from "@/lib/utils";
 
-// Иконки
+// Иконки (добавляем Ticket)
 import {
   Home,
   Settings,
@@ -22,10 +22,9 @@ import {
   Building,     // Department
   Briefcase,    // Integrations
   Ticket,       // <--- НОВАЯ ИКОНКА ДЛЯ ТИКЕТОВ
-  PanelLeft,    // Для мобильного меню
-  // Search,       // Пример иконки для поиска в Header (если нужна)
-  // Bell,         // Пример иконки для уведомлений в Header (если нужна)
-  // CircleUser,   // Пример иконки для профиля пользователя в Header (если нужна)
+  PanelLeft,
+  // Добавьте сюда другие иконки, если они использовались в вашем Layout, например:
+  // Search, Bell, CircleUser 
 } from "lucide-react";
 
 // Импорт ваших существующих страниц (оставляем как было)
@@ -49,6 +48,8 @@ function Layout() {
   const location = useLocation();
   // МАССИВ НАВИГАЦИИ ОПРЕДЕЛЯЕТСЯ ЗДЕСЬ ЖЕ
   const navigation = [
+    // Пример: { name: "Главная", href: "/", icon: Home, current: location.pathname === "/", disabled: false },
+    // Замените на вашу логику для "Главная", если она отличается
     { name: "Главная", href: appConfig.defaultApp === "CRM" ? "/crm" : "/departments", icon: Home, current: location.pathname === (appConfig.defaultApp === "CRM" ? "/crm" : "/departments"), disabled: false },
 
     // --- НАЧАЛО НОВОГО ЭЛЕМЕНТА ДЛЯ ТИКЕТОВ ---
@@ -68,18 +69,19 @@ function Layout() {
     { name: "Настройки", href: "/settings", icon: Settings, current: location.pathname.startsWith("/settings"), disabled: !appConfig.enableSettings },
   ];
 
-  // JSX для DesktopSidebar
+  // JSX для DesktopSidebar (взят из вашего агрегированного файла, адаптирован)
   const DesktopSidebar = () => (
-    <div className="hidden border-r bg-muted/40 md:block">
+    <div className="hidden border-r bg-muted/40 md:block"> {/* Убедитесь, что классы соответствуют вашей UI библиотеке */}
       <div className="flex h-full max-h-screen flex-col gap-2">
         <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
-          <Link to="/" className="flex items-center gap-2 font-semibold">
-             <Home className="h-6 w-6" /> {/* Или ваша иконка приложения */}
+          <Link to={appConfig.defaultApp === "CRM" ? "/crm" : "/departments"} className="flex items-center gap-2 font-semibold">
+             {/* Можно использовать Home или другую иконку, если есть Logo */}
+            <Home className="h-6 w-6" /> 
             <span className="">{appConfig.appName || "Панель"}</span>
           </Link>
         </div>
         <div className="flex-1">
-          <ScrollArea className="h-full">
+          <ScrollArea className="h-full py-4"> {/* Добавлен py-4 для отступов внутри ScrollArea */}
             <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
               {navigation.map((item) => (
                 !item.disabled && (
@@ -103,7 +105,7 @@ function Layout() {
     </div>
   );
 
-  // JSX для MobileSheet (меню для мобильных)
+  // JSX для MobileSheet (меню для мобильных - взят из вашего агрегированного файла, адаптирован)
   const MobileSheetMenu = () => (
     <Sheet>
       <SheetTrigger asChild>
@@ -118,8 +120,8 @@ function Layout() {
       </SheetTrigger>
       <SheetContent side="left" className="flex flex-col p-0">
         <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
-            <Link to="/" className="flex items-center gap-2 font-semibold">
-              <Home className="h-6 w-6" /> {/* Или ваша иконка приложения */}
+            <Link to={appConfig.defaultApp === "CRM" ? "/crm" : "/departments"} className="flex items-center gap-2 font-semibold">
+              <Home className="h-6 w-6" />
               <span className="">{appConfig.appName || "Панель"}</span>
             </Link>
         </div>
@@ -153,12 +155,12 @@ function Layout() {
         <header className="flex h-14 items-center gap-4 border-b bg-muted/40 px-4 lg:h-[60px] lg:px-6">
           <MobileSheetMenu />
           <div className="w-full flex-1">
-            {/* Поиск и другие элементы хедера, если нужны */}
+            {/* Здесь может быть поиск или другие элементы хедера */}
           </div>
-          {/* Профиль пользователя, если нужен */}
+          {/* Здесь может быть кнопка профиля пользователя */}
         </header>
         <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
-          <Outlet />
+          <Outlet /> {/* Сюда будут рендериться ваши страницы (TicketsPage и другие) */}
         </main>
       </div>
     </div>
@@ -181,7 +183,7 @@ function App() {
         <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
           <TooltipProvider>
             <Routes>
-              <Route element={<Layout />}>
+              <Route element={<Layout />}> {/* Используем Layout, определенный выше */}
                 <Route path="/" element={<Navigate to={defaultRedirectPath} replace />} />
 
                 {/* --- ДОБАВЛЕН МАРШРУТ ДЛЯ ТИКЕТОВ --- */}
