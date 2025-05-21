@@ -10,8 +10,8 @@ export interface Ticket {
     priority: string;
     client_name: string | null;
     client_email: string | null;
-    created_at: string; // В базе данных это TIMESTAMP, здесь будет строка
-    updated_at: string; // В базе данных это TIMESTAMP, здесь будет строка
+    created_at: string;
+    updated_at: string;
 }
 
 interface GetTicketsApiResponse {
