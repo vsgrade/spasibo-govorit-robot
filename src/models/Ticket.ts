@@ -1,9 +1,23 @@
 
 /**
  * src/models/Ticket.ts
- * Определение типов и интерфейсов для тикетов.
- * Содержит также вспомогательные функции для работы с тикетами.
+ * Модель данных для тикетов.
  */
+
+/**
+ * Статус тикета
+ */
+export type TicketStatus = 'open' | 'in_progress' | 'waiting' | 'closed';
+
+/**
+ * Приоритет тикета
+ */
+export type TicketPriority = 'low' | 'medium' | 'high' | 'urgent';
+
+/**
+ * Источник тикета
+ */
+export type TicketSource = 'email' | 'website' | 'phone' | 'telegram' | 'whatsapp' | 'vk';
 
 /**
  * Интерфейс тикета
@@ -12,84 +26,43 @@ export interface Ticket {
   id: string;
   title: string;
   description: string;
-  status: 'new' | 'open' | 'pending' | 'resolved' | 'closed';
-  priority: 'low' | 'medium' | 'high' | 'urgent';
-  departmentId: string;
-  clientId?: string;
-  assignedToUserId?: string;
-  sourceType?: 'telegram' | 'vk' | 'whatsapp' | 'email' | 'manual';
-  sourceId?: string; // ID сообщения в системе-источнике
-  createdAt: Date;
-  updatedAt: Date;
+  status: TicketStatus;
+  priority: TicketPriority;
+  source?: TicketSource;
+  client_name?: string;
+  client_email?: string;
+  assigned_to?: string;
+  created_at: string;
+  updated_at: string;
 }
 
 /**
- * Интерфейс сообщения в тикете
+ * Данные для создания тикета
  */
-export interface TicketMessage {
-  id: string;
-  ticketId: string;
-  content: string;
-  senderId: string;
-  senderType: 'user' | 'client' | 'system' | 'bot';
-  createdAt: Date;
-  attachments?: string[];
+export interface CreateTicketDto {
+  title: string;
+  description: string;
+  priority: TicketPriority;
+  source?: TicketSource;
+  client_name?: string;
+  client_email?: string;
+  assigned_to?: string;
 }
 
 /**
- * Функция для имитации сохранения тикета в "базу данных"
- * В реальном приложении это будет выполнять запрос к API
- * 
- * @param ticket - объект с данными тикета для сохранения
- * @returns Promise<Ticket> - промис с сохраненным тикетом
+ * Данные для обновления тикета
  */
-export async function saveTicket(ticket: Partial<Ticket>): Promise<Ticket> {
-  // В реальном приложении здесь был бы вызов API
-  console.log("Saving ticket to database (simulated)", ticket);
-  
-  const now = new Date();
-  const savedTicket: Ticket = {
-    id: ticket.id || Date.now().toString(),
-    title: ticket.title || "Новый тикет",
-    description: ticket.description || "",
-    status: ticket.status || "new",
-    priority: ticket.priority || "medium",
-    departmentId: ticket.departmentId || "",
-    clientId: ticket.clientId,
-    assignedToUserId: ticket.assignedToUserId,
-    sourceType: ticket.sourceType,
-    sourceId: ticket.sourceId,
-    createdAt: ticket.createdAt || now,
-    updatedAt: now
-  };
-  
-  // Имитация задержки API
-  await new Promise(resolve => setTimeout(resolve, 300));
-  
-  return savedTicket;
-}
+export type UpdateTicketDto = Partial<Omit<Ticket, 'id' | 'created_at' | 'updated_at'>>;
 
 /**
- * Функция для создания тикета из сообщения Telegram
- * 
- * @param message - текст сообщения из Telegram
- * @param chatId - ID чата в Telegram
- * @param departmentId - ID отдела, куда назначается тикет
- * @returns Promise<Ticket> - промис с созданным тикетом
+ * Фильтры для поиска тикетов
  */
-export async function createTicketFromTelegram(
-  message: string,
-  chatId: string,
-  departmentId: string
-): Promise<Ticket> {
-  // В реальном приложении здесь был бы вызов API
-  return saveTicket({
-    title: `Telegram обращение (${new Date().toLocaleString("ru")})`,
-    description: message,
-    status: "new",
-    priority: "medium",
-    departmentId,
-    sourceType: "telegram",
-    sourceId: chatId
-  });
+export interface TicketFilters {
+  status?: TicketStatus;
+  priority?: TicketPriority;
+  source?: TicketSource;
+  search?: string;
+  date_from?: string;
+  date_to?: string;
+  assigned_to?: string;
 }

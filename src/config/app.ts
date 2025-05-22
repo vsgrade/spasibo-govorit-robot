@@ -1,63 +1,43 @@
 
 /**
  * src/config/app.ts
- * Основные настройки приложения.
- * Содержит конфигурацию и константы, используемые в приложении.
+ * Конфигурационный файл приложения.
+ * Содержит константы для маршрутов и других глобальных настроек.
  */
 
 /**
- * Конфигурация приложения
+ * Маршруты приложения
  */
-export const appConfig = {
-  // Название приложения
-  appName: "Ticketing System",
+export const routes = {
+  // Основные маршруты
+  home: '/',
+  tickets: '/tickets',
+  newTicket: '/tickets/new',
+  clients: '/clients',
+  reports: '/reports',
+  tasks: '/tasks',
   
-  // Версия приложения
-  version: "1.0.0",
+  // Настройки
+  settings: '/settings',
+  departments: '/departments',
+  integrations: '/integrations',
+  users: '/users',
   
-  // URL для API
-  apiBaseUrl: import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001',
-  
-  // Настройки авторизации
-  auth: {
-    tokenKey: "auth_token",
-    refreshTokenKey: "refresh_token",
-    expiryKey: "token_expiry",
-  },
-  
-  // Поддерживаемые языки
-  supportedLocales: ["ru", "en"],
-  
-  // Настройки навигации
-  navigation: {
-    sidebar: {
-      minWidth: 64,
-      maxWidth: 240,
-    }
+  // CRM маршруты
+  crm: {
+    index: '/crm',
+    contacts: '/crm/contacts',
+    companies: '/crm/companies',
+    deals: '/crm/deals',
+    tasks: '/crm/tasks'
   }
 };
 
 /**
- * Константы для путей маршрутизации
+ * Настройки приложения
  */
-export const routes = {
-  home: "/",
-  tickets: "/tickets",
-  users: "/users",
-  settings: "/settings",
-  departments: "/departments",
-  integrations: "/integrations",
-  crm: {
-    index: "/crm",
-    contacts: "/crm/contacts",
-    companies: "/crm/companies",
-    deals: "/crm/deals",
-    tasks: "/crm/tasks",
-  },
-  auth: {
-    login: "/auth/login",
-    register: "/auth/register",
-    forgotPassword: "/auth/forgot-password",
-    resetPassword: "/auth/reset-password",
-  }
+export const appConfig = {
+  appName: 'CRM система',
+  apiUrl: import.meta.env.VITE_API_URL || 'http://localhost:3000/api',
+  version: '1.0.0'
 };

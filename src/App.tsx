@@ -4,31 +4,29 @@
  * Корневой компонент приложения.
  * Содержит настройку маршрутизации и основную структуру приложения.
  */
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 // Компоненты провайдеров
 import { ThemeProvider } from '@/components/providers/theme-provider';
 import { Toaster } from '@/components/ui/toaster';
 
-// Конфигурация
-import { routes } from '@/config/app';
-
 // Лейауты
 import MainLayout from '@/components/MainLayout';
 
 // Страницы
-import Index from '@/pages/Index';
+import Dashboard from '@/pages/Dashboard';
 import NotFound from '@/pages/NotFound';
-import Settings from '@/pages/Settings';
+import SettingsPage from '@/pages/SettingsPage';
 import DepartmentsPage from '@/pages/DepartmentsPage';
 import IntegrationsPage from '@/pages/IntegrationsPage';
-import SettingsPage from '@/pages/SettingsPage';
 import CrmPage from '@/pages/Crm';
 import ContactsPage from '@/pages/Crm/ContactsPage';
 import CompaniesPage from '@/pages/Crm/CompaniesPage';
 import DealsPage from '@/pages/Crm/DealsPage';
 import TasksPage from '@/pages/Crm/TasksPage';
 import UsersPage from '@/pages/UsersPage';
+import { TicketsPage } from '@/pages/TicketsPage';
+import NewTicket from '@/pages/NewTicket';
 
 /**
  * Главный компонент приложения
@@ -42,20 +40,24 @@ function App() {
           {/* Маршруты внутри основного лейаута */}
           <Route element={<MainLayout />}>
             {/* Главная страница */}
-            <Route path={routes.home} element={<Index />} />
+            <Route path="/" element={<Dashboard />} />
 
             {/* Настройки и администрирование */}
-            <Route path={routes.settings} element={<SettingsPage />} />
-            <Route path={routes.departments} element={<DepartmentsPage />} />
-            <Route path={routes.integrations} element={<IntegrationsPage />} />
-            <Route path={routes.users} element={<UsersPage />} />
+            <Route path="/settings" element={<SettingsPage />} />
+            <Route path="/departments" element={<DepartmentsPage />} />
+            <Route path="/integrations" element={<IntegrationsPage />} />
+            <Route path="/users" element={<UsersPage />} />
+            
+            {/* Тикеты */}
+            <Route path="/tickets" element={<TicketsPage />} />
+            <Route path="/tickets/new" element={<NewTicket />} />
 
             {/* CRM маршруты */}
-            <Route path={routes.crm.index} element={<CrmPage />} />
-            <Route path={routes.crm.contacts} element={<ContactsPage />} />
-            <Route path={routes.crm.companies} element={<CompaniesPage />} />
-            <Route path={routes.crm.deals} element={<DealsPage />} />
-            <Route path={routes.crm.tasks} element={<TasksPage />} />
+            <Route path="/crm" element={<CrmPage />} />
+            <Route path="/crm/contacts" element={<ContactsPage />} />
+            <Route path="/crm/companies" element={<CompaniesPage />} />
+            <Route path="/crm/deals" element={<DealsPage />} />
+            <Route path="/crm/tasks" element={<TasksPage />} />
           </Route>
 
           {/* Редирект с неизвестных маршрутов */}

@@ -1,4 +1,9 @@
 
+/**
+ * src/pages/Dashboard.tsx
+ * Страница панели управления (дашборд).
+ * Отображает ключевые показатели и обзор системы.
+ */
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -12,9 +17,11 @@ import {
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { ArrowRight, Inbox, MessageSquare, Plus, Users } from "lucide-react";
-import AnalyticsCharts from "@/components/AnalyticsCharts";
+import { routes } from "@/config/app";
 
-// Временные данные для демонстрации
+/**
+ * Временные данные для демонстрации тикетов
+ */
 const recentTickets = [
   {
     id: "T-1001",
@@ -50,6 +57,11 @@ const recentTickets = [
   },
 ];
 
+/**
+ * Функция для получения класса стилизации статуса тикета
+ * @param status - статус тикета
+ * @returns string - CSS-класс для отображения статуса
+ */
 const getStatusClass = (status: string) => {
   switch (status) {
     case "Новый":
@@ -65,6 +77,11 @@ const getStatusClass = (status: string) => {
   }
 };
 
+/**
+ * Функция для получения иконки источника тикета
+ * @param source - источник тикета
+ * @returns string - Emoji-иконка для источника
+ */
 const getSourceIcon = (source: string) => {
   switch (source) {
     case "Email":
@@ -80,9 +97,18 @@ const getSourceIcon = (source: string) => {
   }
 };
 
+/**
+ * Компонент страницы панели управления
+ * @returns JSX.Element - разметка дашборда
+ */
 export default function Dashboard() {
   const [tickets] = useState(recentTickets);
 
+  /**
+   * Форматирование даты
+   * @param dateString - дата в формате строки
+   * @returns string - отформатированная дата
+   */
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     return new Intl.DateTimeFormat("ru-RU", {
@@ -98,12 +124,13 @@ export default function Dashboard() {
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold">Панель управления</h1>
         <Button asChild>
-          <Link to="/tickets/new">
+          <Link to={routes.newTicket}>
             <Plus className="h-4 w-4 mr-2" /> Создать тикет
           </Link>
         </Button>
       </div>
       
+      {/* Карточки с основными метриками */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -117,6 +144,7 @@ export default function Dashboard() {
             </p>
           </CardContent>
         </Card>
+        
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Активные чаты</CardTitle>
@@ -129,6 +157,7 @@ export default function Dashboard() {
             </p>
           </CardContent>
         </Card>
+        
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Клиенты</CardTitle>
@@ -143,11 +172,12 @@ export default function Dashboard() {
         </Card>
       </div>
 
+      {/* Таблица с последними тикетами */}
       <Card className="mb-8">
         <CardHeader className="flex flex-row items-center justify-between">
-          <CardTitle>Недавние обращения КЛИЕНТОВ</CardTitle>
+          <CardTitle>Недавние обращения клиентов</CardTitle>
           <Button variant="ghost" size="sm" asChild>
-            <Link to="/tickets">
+            <Link to={routes.tickets}>
               Все тикеты <ArrowRight className="h-4 w-4 ml-1" />
             </Link>
           </Button>
@@ -183,10 +213,8 @@ export default function Dashboard() {
                   </TableCell>
                   <TableCell>{formatDate(ticket.date)}</TableCell>
                   <TableCell>
-                    <Button variant="ghost" size="sm" asChild>
-                      <Link to={`/tickets/${ticket.id}`}>
-                        Просмотреть
-                      </Link>
+                    <Button variant="ghost" size="sm">
+                      Просмотреть
                     </Button>
                   </TableCell>
                 </TableRow>
@@ -195,8 +223,65 @@ export default function Dashboard() {
           </Table>
         </CardContent>
       </Card>
-      
-      <AnalyticsCharts />
+
+      {/* Карточки быстрого доступа */}
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+        <Link to={routes.tickets}>
+          <Card className="h-full hover:shadow-md transition-shadow cursor-pointer">
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <CardTitle>Тикеты</CardTitle>
+                <MessageSquare className="h-5 w-5 text-blue-500" />
+              </div>
+            </CardHeader>
+            <CardContent>
+              <Button variant="secondary" className="w-full">Перейти</Button>
+            </CardContent>
+          </Card>
+        </Link>
+        
+        <Link to={routes.crm.index}>
+          <Card className="h-full hover:shadow-md transition-shadow cursor-pointer">
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <CardTitle>CRM</CardTitle>
+                <Users className="h-5 w-5 text-green-500" />
+              </div>
+            </CardHeader>
+            <CardContent>
+              <Button variant="secondary" className="w-full">Перейти</Button>
+            </CardContent>
+          </Card>
+        </Link>
+        
+        <Link to={routes.reports}>
+          <Card className="h-full hover:shadow-md transition-shadow cursor-pointer">
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <CardTitle>Отчеты</CardTitle>
+                <ArrowRight className="h-5 w-5 text-purple-500" />
+              </div>
+            </CardHeader>
+            <CardContent>
+              <Button variant="secondary" className="w-full">Перейти</Button>
+            </CardContent>
+          </Card>
+        </Link>
+        
+        <Link to={routes.settings}>
+          <Card className="h-full hover:shadow-md transition-shadow cursor-pointer">
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <CardTitle>Настройки</CardTitle>
+                <Settings className="h-5 w-5 text-amber-500" />
+              </div>
+            </CardHeader>
+            <CardContent>
+              <Button variant="secondary" className="w-full">Перейти</Button>
+            </CardContent>
+          </Card>
+        </Link>
+      </div>
     </div>
   );
 }

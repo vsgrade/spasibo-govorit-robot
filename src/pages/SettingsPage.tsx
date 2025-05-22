@@ -11,13 +11,25 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
+import { useToast } from "@/hooks/use-toast";
 
 /**
  * Компонент страницы настроек
  * @returns JSX.Element - разметка страницы настроек
  */
 export default function SettingsPage() {
+  const { toast } = useToast();
   const [activeTab, setActiveTab] = useState("general");
+
+  /**
+   * Обработчик сохранения настроек
+   */
+  const handleSaveSettings = () => {
+    toast({
+      title: "Настройки сохранены",
+      description: "Настройки системы были успешно обновлены",
+    });
+  };
 
   return (
     <div className="container mx-auto p-6">
@@ -63,7 +75,9 @@ export default function SettingsPage() {
                   <option>America/New_York (UTC-5)</option>
                 </select>
               </div>
-              <Button className="mt-4">Сохранить настройки</Button>
+              <Button className="mt-4" onClick={handleSaveSettings}>
+                Сохранить настройки
+              </Button>
             </CardContent>
           </Card>
         </TabsContent>
@@ -99,6 +113,9 @@ export default function SettingsPage() {
                   </div>
                   <Switch id="slack-notify" />
                 </div>
+                <Button className="mt-4" onClick={handleSaveSettings}>
+                  Сохранить настройки уведомлений
+                </Button>
               </div>
             </CardContent>
           </Card>
@@ -170,7 +187,7 @@ export default function SettingsPage() {
               </div>
               <div className="flex justify-between gap-4">
                 <Button variant="outline" className="flex-1">Тестировать соединение</Button>
-                <Button className="flex-1">Сохранить настройки</Button>
+                <Button className="flex-1" onClick={handleSaveSettings}>Сохранить настройки</Button>
               </div>
             </CardContent>
           </Card>
