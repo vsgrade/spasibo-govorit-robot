@@ -1,9 +1,16 @@
 
-// src/services/ticketService.ts
+/**
+ * src/services/ticketService.ts
+ * Сервис для работы с API тикетов.
+ * Предоставляет методы для выполнения CRUD операций с тикетами.
+ */
 
 // В реальном приложении URL берется из переменных окружения
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001';
 
+/**
+ * Интерфейс тикета, получаемого с сервера
+ */
 export interface Ticket {
     id: number;
     title: string;
@@ -16,6 +23,10 @@ export interface Ticket {
     updated_at: string;
 }
 
+/**
+ * Получить все тикеты
+ * @returns Promise<Ticket[]> - промис с массивом тикетов
+ */
 export const getTickets = async (): Promise<Ticket[]> => {
     try {
         const response = await fetch(`${API_BASE_URL}/api/tickets`);
@@ -36,6 +47,11 @@ export const getTickets = async (): Promise<Ticket[]> => {
     }
 };
 
+/**
+ * Получить тикет по ID
+ * @param id - идентификатор тикета
+ * @returns Promise<Ticket> - промис с объектом тикета
+ */
 export const getTicketById = async (id: number): Promise<Ticket> => {
     try {
         const response = await fetch(`${API_BASE_URL}/api/tickets/${id}`);
@@ -55,6 +71,9 @@ export const getTicketById = async (id: number): Promise<Ticket> => {
     }
 };
 
+/**
+ * Интерфейс данных для создания тикета
+ */
 export interface CreateTicketPayload {
     title: string;
     description: string;
@@ -63,12 +82,20 @@ export interface CreateTicketPayload {
     priority?: string;
 }
 
+/**
+ * Интерфейс ответа от API на операции с тикетами
+ */
 export interface TicketResponse {
     status: string;
     message: string;
     ticketId?: number;
 }
 
+/**
+ * Создать новый тикет
+ * @param ticketData - данные нового тикета
+ * @returns Promise<TicketResponse> - промис с ответом от сервера
+ */
 export const createTicket = async (ticketData: CreateTicketPayload): Promise<TicketResponse> => {
     try {
         const response = await fetch(`${API_BASE_URL}/api/tickets`, {
@@ -89,6 +116,12 @@ export const createTicket = async (ticketData: CreateTicketPayload): Promise<Tic
     }
 };
 
+/**
+ * Обновить существующий тикет
+ * @param id - идентификатор тикета
+ * @param ticketData - данные для обновления
+ * @returns Promise<TicketResponse> - промис с ответом от сервера
+ */
 export const updateTicket = async (id: number, ticketData: Partial<CreateTicketPayload>): Promise<TicketResponse> => {
     try {
         const response = await fetch(`${API_BASE_URL}/api/tickets/${id}`, {
@@ -109,6 +142,11 @@ export const updateTicket = async (id: number, ticketData: Partial<CreateTicketP
     }
 };
 
+/**
+ * Удалить тикет
+ * @param id - идентификатор тикета
+ * @returns Promise<TicketResponse> - промис с ответом от сервера
+ */
 export const deleteTicket = async (id: number): Promise<TicketResponse> => {
     try {
         const response = await fetch(`${API_BASE_URL}/api/tickets/${id}`, {
@@ -125,6 +163,11 @@ export const deleteTicket = async (id: number): Promise<TicketResponse> => {
     }
 };
 
+/**
+ * Поиск тикетов по запросу
+ * @param query - поисковый запрос
+ * @returns Promise<Ticket[]> - промис с массивом найденных тикетов
+ */
 export const searchTickets = async (query: string): Promise<Ticket[]> => {
     try {
         const response = await fetch(`${API_BASE_URL}/api/tickets/search?query=${encodeURIComponent(query)}`);

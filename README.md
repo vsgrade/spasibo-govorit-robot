@@ -1,73 +1,135 @@
-# Welcome to your Lovable project
 
-## Project info
+# Система управления тикетами и CRM
 
-**URL**: https://lovable.dev/projects/3fe071c6-90a6-42d1-8769-a17d03312055
+## Описание проекта
 
-## How can I edit this code?
+Этот проект представляет собой полнофункциональную систему управления тикетами и CRM для обработки клиентских запросов из различных источников (Telegram, ВКонтакте, WhatsApp, электронная почта). Система включает управление тикетами, контактами, компаниями и сделками в едином интерфейсе.
 
-There are several ways of editing your application.
+## Структура проекта
 
-**Use Lovable**
+### Фронтенд (React, TypeScript, Vite)
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/3fe071c6-90a6-42d1-8769-a17d03312055) and start prompting.
+- `/src/components/` - UI компоненты 
+  - `/src/components/ui/` - базовые UI компоненты (shadcn/ui)
+  - `/src/components/providers/` - провайдеры контекста и настроек
+- `/src/config/` - конфигурационные файлы
+- `/src/hooks/` - кастомные React-хуки
+- `/src/lib/` - вспомогательные функции и утилиты
+- `/src/models/` - типы и интерфейсы данных
+- `/src/pages/` - компоненты страниц
+  - `/src/pages/Crm/` - страницы CRM раздела
+- `/src/services/` - сервисы для работы с API
 
-Changes made via Lovable will be committed automatically to this repo.
+### Бэкенд (Node.js, Express, MySQL)
 
-**Use your preferred IDE**
+- `/src/backend/` - серверный код
+  - `/src/backend/routes/` - маршруты API
+  - `/src/backend/server.js` - основной файл сервера
+  - `/src/backend/setup-db.js` - скрипт настройки базы данных
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+## Основные функции
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+### Управление тикетами
+- Создание и обработка тикетов из различных источников
+- Назначение ответственных сотрудников
+- Установка приоритетов и статусов
+- Отслеживание истории обработки
 
-Follow these steps:
+### CRM
+- Управление контактами клиентов
+- Учет компаний
+- Управление сделками (канбан-доска)
+- Учет и выполнение задач
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+### Административные функции
+- Управление пользователями и правами доступа
+- Настройка отделов
+- Интеграции с внешними источниками
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+## Технический стек
 
-# Step 3: Install the necessary dependencies.
-npm i
+### Фронтенд
+- React 18
+- TypeScript
+- Vite (сборщик)
+- React Router (маршрутизация)
+- Tailwind CSS (стили)
+- shadcn/ui (компоненты интерфейса)
+- Radix UI (примитивы доступности)
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+### Бэкенд
+- Node.js
+- Express
+- MySQL (база данных)
+- CORS (для защиты API)
+- Dotenv (для управления переменными окружения)
+
+## Установка и запуск
+
+### Предварительные требования
+- Node.js (версия 16 или выше)
+- MySQL сервер
+
+### Установка фронтенда
+```bash
+# Установка зависимостей
+npm install
+
+# Запуск в режиме разработки
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+### Установка бэкенда
+```bash
+# Перейти в директорию бэкенда
+cd src/backend
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+# Установка зависимостей
+npm install
 
-**Use GitHub Codespaces**
+# Создание файла .env из примера
+cp .env.example .env
+# (после этого отредактируйте .env файл, указав свои учетные данные для базы данных)
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+# Настройка базы данных
+npm run setup-db
 
-## What technologies are used for this project?
+# Запуск сервера
+npm run dev
+```
 
-This project is built with:
+## Конфигурация
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+### Переменные окружения бэкенда (.env файл)
+- `DB_HOST` - хост базы данных (по умолчанию: localhost)
+- `DB_USER` - пользователь базы данных
+- `DB_PASSWORD` - пароль базы данных
+- `DB_NAME` - имя базы данных
+- `PORT` - порт для запуска сервера (по умолчанию: 3001)
 
-## How can I deploy this project?
+### Переменные окружения фронтенда
+- `VITE_API_BASE_URL` - базовый URL API (по умолчанию: http://localhost:3001)
 
-Simply open [Lovable](https://lovable.dev/projects/3fe071c6-90a6-42d1-8769-a17d03312055) and click on Share -> Publish.
+## API Эндпоинты
 
-## Can I connect a custom domain to my Lovable project?
+### Тикеты
 
-Yes, you can!
+- `GET /api/tickets` - Получить все тикеты (поддерживает фильтры по статусу и приоритету)
+- `GET /api/tickets/search` - Поиск тикетов по запросу
+- `GET /api/tickets/:id` - Получить тикет по ID
+- `POST /api/tickets` - Создать новый тикет
+- `PUT /api/tickets/:id` - Обновить тикет
+- `DELETE /api/tickets/:id` - Удалить тикет
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+## Дальнейшее развитие
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+Планы по развитию проекта:
+1. Добавление аутентификации и авторизации
+2. Интеграция с внешними API (Telegram Bot API, VK API, WhatsApp Business API)
+3. Расширенная аналитика и отчеты
+4. Система уведомлений о новых тикетах и задачах
+5. Автоматизация обработки обращений с использованием шаблонов и правил
+
+## Лицензия
+
+Этот проект распространяется под лицензией MIT.

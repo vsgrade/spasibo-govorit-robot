@@ -1,8 +1,26 @@
 
+/**
+ * src/backend/routes/tickets.js
+ * Маршруты для API работы с тикетами.
+ * Реализует CRUD операции над тикетами и поиск.
+ */
+
 const express = require('express');
 const router = express.Router();
 
-// Получить все тикеты с возможностью фильтрации
+/**
+ * GET /api/tickets
+ * Получить все тикеты с возможностью фильтрации по статусу и приоритету
+ * 
+ * Query параметры:
+ *   status - фильтр по статусу тикета
+ *   priority - фильтр по приоритету тикета
+ * 
+ * @param {Object} req - объект запроса Express
+ * @param {Object} res - объект ответа Express
+ * @param {Function} next - функция перехода к следующему middleware
+ * @returns {Object} JSON-объект со списком тикетов
+ */
 router.get('/', async (req, res, next) => {
   try {
     const db = req.db;
@@ -41,7 +59,18 @@ router.get('/', async (req, res, next) => {
   }
 });
 
-// Поиск тикетов
+/**
+ * GET /api/tickets/search
+ * Поиск тикетов по заданному запросу
+ * 
+ * Query параметры:
+ *   query - поисковый запрос (строка для поиска)
+ * 
+ * @param {Object} req - объект запроса Express
+ * @param {Object} res - объект ответа Express
+ * @param {Function} next - функция перехода к следующему middleware
+ * @returns {Object} JSON-объект с найденными тикетами
+ */
 router.get('/search', async (req, res, next) => {
   try {
     const db = req.db;
@@ -66,7 +95,18 @@ router.get('/search', async (req, res, next) => {
   }
 });
 
-// Получить тикет по ID
+/**
+ * GET /api/tickets/:id
+ * Получить тикет по ID
+ * 
+ * URL параметры:
+ *   id - идентификатор тикета
+ * 
+ * @param {Object} req - объект запроса Express
+ * @param {Object} res - объект ответа Express
+ * @param {Function} next - функция перехода к следующему middleware
+ * @returns {Object} JSON-объект с данными тикета
+ */
 router.get('/:id', async (req, res, next) => {
   try {
     const db = req.db;
@@ -90,7 +130,22 @@ router.get('/:id', async (req, res, next) => {
   }
 });
 
-// Создать новый тикет
+/**
+ * POST /api/tickets
+ * Создать новый тикет
+ * 
+ * Body параметры:
+ *   title - заголовок тикета (обязательно)
+ *   description - описание проблемы (обязательно)
+ *   client_name - имя клиента
+ *   client_email - email клиента
+ *   priority - приоритет тикета
+ * 
+ * @param {Object} req - объект запроса Express
+ * @param {Object} res - объект ответа Express
+ * @param {Function} next - функция перехода к следующему middleware
+ * @returns {Object} JSON-объект с подтверждением и ID нового тикета
+ */
 router.post('/', async (req, res, next) => {
   try {
     const db = req.db;
@@ -123,7 +178,26 @@ router.post('/', async (req, res, next) => {
   }
 });
 
-// Обновить тикет
+/**
+ * PUT /api/tickets/:id
+ * Обновить тикет
+ * 
+ * URL параметры:
+ *   id - идентификатор тикета
+ * 
+ * Body параметры (все опциональны):
+ *   title - заголовок тикета
+ *   description - описание проблемы
+ *   status - статус тикета
+ *   priority - приоритет тикета
+ *   client_name - имя клиента
+ *   client_email - email клиента
+ * 
+ * @param {Object} req - объект запроса Express
+ * @param {Object} res - объект ответа Express
+ * @param {Function} next - функция перехода к следующему middleware
+ * @returns {Object} JSON-объект с подтверждением обновления
+ */
 router.put('/:id', async (req, res, next) => {
   try {
     const db = req.db;
@@ -164,7 +238,18 @@ router.put('/:id', async (req, res, next) => {
   }
 });
 
-// Удалить тикет
+/**
+ * DELETE /api/tickets/:id
+ * Удалить тикет
+ * 
+ * URL параметры:
+ *   id - идентификатор тикета
+ * 
+ * @param {Object} req - объект запроса Express
+ * @param {Object} res - объект ответа Express
+ * @param {Function} next - функция перехода к следующему middleware
+ * @returns {Object} JSON-объект с подтверждением удаления
+ */
 router.delete('/:id', async (req, res, next) => {
   try {
     const db = req.db;

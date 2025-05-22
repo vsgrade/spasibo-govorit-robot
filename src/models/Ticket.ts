@@ -1,4 +1,13 @@
 
+/**
+ * src/models/Ticket.ts
+ * Определение типов и интерфейсов для тикетов.
+ * Содержит также вспомогательные функции для работы с тикетами.
+ */
+
+/**
+ * Интерфейс тикета
+ */
 export interface Ticket {
   id: string;
   title: string;
@@ -9,11 +18,14 @@ export interface Ticket {
   clientId?: string;
   assignedToUserId?: string;
   sourceType?: 'telegram' | 'vk' | 'whatsapp' | 'email' | 'manual';
-  sourceId?: string; // ID of the message in the source system
+  sourceId?: string; // ID сообщения в системе-источнике
   createdAt: Date;
   updatedAt: Date;
 }
 
+/**
+ * Интерфейс сообщения в тикете
+ */
 export interface TicketMessage {
   id: string;
   ticketId: string;
@@ -24,9 +36,15 @@ export interface TicketMessage {
   attachments?: string[];
 }
 
-// Mock function to simulate saving a ticket to the "database"
+/**
+ * Функция для имитации сохранения тикета в "базу данных"
+ * В реальном приложении это будет выполнять запрос к API
+ * 
+ * @param ticket - объект с данными тикета для сохранения
+ * @returns Promise<Ticket> - промис с сохраненным тикетом
+ */
 export async function saveTicket(ticket: Partial<Ticket>): Promise<Ticket> {
-  // In a real app, this would make a real database call
+  // В реальном приложении здесь был бы вызов API
   console.log("Saving ticket to database (simulated)", ticket);
   
   const now = new Date();
@@ -45,19 +63,26 @@ export async function saveTicket(ticket: Partial<Ticket>): Promise<Ticket> {
     updatedAt: now
   };
   
-  // Simulate API delay
+  // Имитация задержки API
   await new Promise(resolve => setTimeout(resolve, 300));
   
   return savedTicket;
 }
 
-// Create a ticket from a Telegram message
+/**
+ * Функция для создания тикета из сообщения Telegram
+ * 
+ * @param message - текст сообщения из Telegram
+ * @param chatId - ID чата в Telegram
+ * @param departmentId - ID отдела, куда назначается тикет
+ * @returns Promise<Ticket> - промис с созданным тикетом
+ */
 export async function createTicketFromTelegram(
   message: string,
   chatId: string,
   departmentId: string
 ): Promise<Ticket> {
-  // In a real app, this would create a ticket in the database
+  // В реальном приложении здесь был бы вызов API
   return saveTicket({
     title: `Telegram обращение (${new Date().toLocaleString("ru")})`,
     description: message,

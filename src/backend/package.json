@@ -2,7 +2,7 @@
 {
   "name": "ticket-system-backend",
   "version": "1.0.0",
-  "description": "Бэкенд для системы тикетов",
+  "description": "Бэкенд для системы тикетов и CRM",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",

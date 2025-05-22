@@ -1,7 +1,17 @@
 
+/**
+ * src/backend/setup-db.js
+ * Скрипт для настройки и инициализации базы данных.
+ * Создает базу данных и необходимые таблицы, добавляет тестовые данные.
+ */
+
 require('dotenv').config();
 const mysql = require('mysql2/promise');
 
+/**
+ * Основная функция настройки базы данных
+ * Выполняет все необходимые шаги для инициализации БД
+ */
 async function setupDatabase() {
   let connection;
 

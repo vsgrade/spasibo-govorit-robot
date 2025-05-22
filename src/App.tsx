@@ -1,215 +1,63 @@
-// src/App.tsx
-import { Suspense, lazy } from "react";
-import { BrowserRouter, Navigate, Route, Routes, Link, Outlet, useLocation } from "react-router-dom";
 
-// Ваши UI компоненты и утилиты (оставляем то, что было в вашем файле)
-import { Button } from "@/components/ui/button";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import {
-  TooltipProvider,
-} from "@/components/ui/tooltip";
-import { ThemeProvider } from "@/components/providers/theme-provider"; // Этот импорт был в вашем App.tsx
-import { Toaster } from "@/components/ui/sonner";
-import { appConfig } from "@/config/app";
-import { cn } from "@/lib/utils";
+/**
+ * src/App.tsx
+ * Корневой компонент приложения.
+ * Содержит настройку маршрутизации и основную структуру приложения.
+ */
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 
-// Иконки (добавляем Ticket)
-import {
-  Home,
-  Settings,
-  Users,
-  Building,     // Department
-  Briefcase,    // Integrations
-  Ticket,       // <--- НОВАЯ ИКОНКА ДЛЯ ТИКЕТОВ
-  PanelLeft,
-  // Добавьте сюда другие иконки, если они использовались в вашем Layout, например:
-  // Search, Bell, CircleUser 
-} from "lucide-react";
+// Компоненты провайдеров
+import { ThemeProvider } from '@/components/providers/theme-provider';
+import { Toaster } from '@/components/ui/toaster';
 
-// Импорт ваших существующих страниц (оставляем как было)
-const DepartmentsPage = lazy(() => import("@/pages/DepartmentsPage").then(module => ({ default: module.DepartmentsPage })) );
-const IntegrationsPage = lazy(() => import("@/pages/IntegrationsPage").then(module => ({ default: module.IntegrationsPage })) );
-const SettingsPage = lazy(() => import("@/pages/SettingsPage").then(module => ({ default: module.SettingsPage })) );
-const CrmPage = lazy(() => import("@/pages/Crm").then(module => ({ default: module.CrmPage })) );
-const ContactsPage = lazy(() => import("@/pages/Crm/ContactsPage").then(module => ({ default: module.ContactsPage })) );
-const CompaniesPage = lazy(() => import("@/pages/Crm/CompaniesPage").then(module => ({ default: module.CompaniesPage })) );
-const DealsPage = lazy(() => import("@/pages/Crm/DealsPage").then(module => ({ default: module.DealsPage })) );
-const TasksPage = lazy(() => import("@/pages/Crm/TasksPage").then(module => ({ default: module.TasksPage })) );
-const UsersPage = lazy(() => import("@/pages/UsersPage").then(module => ({ default: module.UsersPage })) );
+// Конфигурация
+import { routes } from '@/config/app';
 
-// --- ДОБАВЛЕН ИМПОРТ ДЛЯ НОВОЙ СТРАНИЦЫ ТИКЕТОВ ---
-const TicketsPage = lazy(() => import("@/pages/TicketsPage").then(module => ({ default: module.TicketsPage })) );
-// --- КОНЕЦ ДОБАВЛЕНИЯ ИМПОРТА ---
+// Страницы
+import Index from '@/pages/Index';
+import NotFound from '@/pages/NotFound';
+import Settings from '@/pages/Settings';
+import DepartmentsPage from '@/pages/DepartmentsPage';
+import IntegrationsPage from '@/pages/IntegrationsPage';
+import SettingsPage from '@/pages/SettingsPage';
+import CrmPage from '@/pages/Crm';
+import ContactsPage from '@/pages/Crm/ContactsPage';
+import CompaniesPage from '@/pages/Crm/CompaniesPage';
+import DealsPage from '@/pages/Crm/DealsPage';
+import TasksPage from '@/pages/Crm/TasksPage';
+import UsersPage from '@/pages/UsersPage';
 
-
-// КОМПОНЕНТ МАКЕТА (LAYOUT) ОПРЕДЕЛЕН ПРЯМО ЗДЕСЬ
-function Layout() {
-  const location = useLocation();
-  // МАССИВ НАВИГАЦИИ ОПРЕДЕЛЯЕТСЯ ЗДЕСЬ ЖЕ
-  const navigation = [
-    // Пример: { name: "Главная", href: "/", icon: Home, current: location.pathname === "/", disabled: false },
-    // Замените на вашу логику для "Главная", если она отличается
-    { name: "Главная", href: appConfig.defaultApp === "CRM" ? "/crm" : "/departments", icon: Home, current: location.pathname === (appConfig.defaultApp === "CRM" ? "/crm" : "/departments"), disabled: false },
-
-    // --- НАЧАЛО НОВОГО ЭЛЕМЕНТА ДЛЯ ТИКЕТОВ ---
-    {
-      name: "Тикеты",
-      href: "/tickets",
-      icon: Ticket,
-      current: location.pathname.startsWith("/tickets"),
-      disabled: false
-    },
-    // --- КОНЕЦ НОВОГО ЭЛЕМЕНТА ДЛЯ ТИКЕТОВ ---
-
-    { name: appConfig.sidebarNavName || "CRM", href: "/crm", icon: Users, current: location.pathname.startsWith("/crm"), disabled: !appConfig.enableCrm },
-    { name: "Отделы", href: "/departments", icon: Building, current: location.pathname.startsWith("/departments"), disabled: !appConfig.enableDepartments },
-    { name: "Интеграции", href: "/integrations", icon: Briefcase, current: location.pathname.startsWith("/integrations"), disabled: !appConfig.enableIntegrations },
-    { name: "Пользователи", href: "/users", icon: Users, current: location.pathname.startsWith("/users"), disabled: !appConfig.enableUsers },
-    { name: "Настройки", href: "/settings", icon: Settings, current: location.pathname.startsWith("/settings"), disabled: !appConfig.enableSettings },
-  ];
-
-  // JSX для DesktopSidebar (взят из вашего агрегированного файла, адаптирован)
-  const DesktopSidebar = () => (
-    <div className="hidden border-r bg-muted/40 md:block"> {/* Убедитесь, что классы соответствуют вашей UI библиотеке */}
-      <div className="flex h-full max-h-screen flex-col gap-2">
-        <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
-          <Link to={appConfig.defaultApp === "CRM" ? "/crm" : "/departments"} className="flex items-center gap-2 font-semibold">
-             {/* Можно использовать Home или другую иконку, если есть Logo */}
-            <Home className="h-6 w-6" /> 
-            <span className="">{appConfig.appName || "Панель"}</span>
-          </Link>
-        </div>
-        <div className="flex-1">
-          <ScrollArea className="h-full py-4"> {/* Добавлен py-4 для отступов внутри ScrollArea */}
-            <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
-              {navigation.map((item) => (
-                !item.disabled && (
-                  <Link
-                    key={item.name}
-                    to={item.href}
-                    className={cn(
-                      "flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-primary",
-                      item.current ? "bg-muted text-primary" : "text-muted-foreground"
-                    )}
-                  >
-                    <item.icon className="h-4 w-4" />
-                    {item.name}
-                  </Link>
-                )
-              ))}
-            </nav>
-          </ScrollArea>
-        </div>
-      </div>
-    </div>
-  );
-
-  // JSX для MobileSheet (меню для мобильных - взят из вашего агрегированного файла, адаптирован)
-  const MobileSheetMenu = () => (
-    <Sheet>
-      <SheetTrigger asChild>
-        <Button
-          variant="outline"
-          size="icon"
-          className="shrink-0 md:hidden"
-        >
-          <PanelLeft className="h-5 w-5" />
-          <span className="sr-only">Открыть навигационное меню</span>
-        </Button>
-      </SheetTrigger>
-      <SheetContent side="left" className="flex flex-col p-0">
-        <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
-            <Link to={appConfig.defaultApp === "CRM" ? "/crm" : "/departments"} className="flex items-center gap-2 font-semibold">
-              <Home className="h-6 w-6" />
-              <span className="">{appConfig.appName || "Панель"}</span>
-            </Link>
-        </div>
-        <ScrollArea className="flex-1">
-            <nav className="grid gap-2 p-4 text-lg font-medium">
-            {navigation.map((item) => (
-                !item.disabled && (
-                <Link
-                    key={item.name}
-                    to={item.href}
-                    className={cn(
-                    "flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-primary",
-                    item.current ? "bg-muted text-primary" : "text-muted-foreground"
-                    )}
-                >
-                    <item.icon className="h-5 w-5" />
-                    {item.name}
-                </Link>
-                )
-            ))}
-            </nav>
-        </ScrollArea>
-      </SheetContent>
-    </Sheet>
-  );
-
-  return (
-    <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
-      <DesktopSidebar />
-      <div className="flex flex-col">
-        <header className="flex h-14 items-center gap-4 border-b bg-muted/40 px-4 lg:h-[60px] lg:px-6">
-          <MobileSheetMenu />
-          <div className="w-full flex-1">
-            {/* Здесь может быть поиск или другие элементы хедера */}
-          </div>
-          {/* Здесь может быть кнопка профиля пользователя */}
-        </header>
-        <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
-          <Outlet /> {/* Сюда будут рендериться ваши страницы (TicketsPage и другие) */}
-        </main>
-      </div>
-    </div>
-  );
-}
-
-// Основная функция App
+/**
+ * Главный компонент приложения
+ * @returns JSX.Element - разметка основного приложения
+ */
 function App() {
-  const defaultRedirectPath = appConfig.defaultApp === "CRM" ? "/crm" : "/departments";
-
   return (
-    <BrowserRouter>
-      <Suspense
-        fallback={
-          <div className="flex h-screen w-full items-center justify-center">
-            Загрузка...
-          </div>
-        }
-      >
-        <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
-          <TooltipProvider>
-            <Routes>
-              <Route element={<Layout />}> {/* Используем Layout, определенный выше */}
-                <Route path="/" element={<Navigate to={defaultRedirectPath} replace />} />
+    <ThemeProvider defaultTheme="system" storageKey="theme-preference">
+      <Router>
+        <Routes>
+          {/* Главная страница */}
+          <Route path={routes.home} element={<Index />} />
 
-                {/* --- ДОБАВЛЕН МАРШРУТ ДЛЯ ТИКЕТОВ --- */}
-                <Route path="/tickets" element={<TicketsPage />} />
-                {/* --- КОНЕЦ ДОБАВЛЕНИЯ МАРШРУТА --- */}
+          {/* Настройки и администрирование */}
+          <Route path={routes.settings} element={<SettingsPage />} />
+          <Route path={routes.departments} element={<DepartmentsPage />} />
+          <Route path={routes.integrations} element={<IntegrationsPage />} />
+          <Route path={routes.users} element={<UsersPage />} />
 
-                {appConfig.enableDepartments && <Route path="/departments" element={<DepartmentsPage />} />}
-                {appConfig.enableIntegrations && <Route path="/integrations" element={<IntegrationsPage />} />}
-                {appConfig.enableSettings && <Route path="/settings" element={<SettingsPage />} />}
+          {/* CRM маршруты */}
+          <Route path={routes.crm.index} element={<CrmPage />} />
+          <Route path={routes.crm.contacts} element={<ContactsPage />} />
+          <Route path={routes.crm.companies} element={<CompaniesPage />} />
+          <Route path={routes.crm.deals} element={<DealsPage />} />
+          <Route path={routes.crm.tasks} element={<TasksPage />} />
 
-                {appConfig.enableCrm && <Route path="/crm" element={<CrmPage />} />}
-                {appConfig.enableCrmContacts && <Route path="/crm/contacts" element={<ContactsPage />} />}
-                {appConfig.enableCrmCompanies && <Route path="/crm/companies" element={<CompaniesPage />} />}
-                {appConfig.enableCrmDeals && <Route path="/crm/deals" element={<DealsPage />} />}
-                {appConfig.enableCrmTasks && <Route path="/crm/tasks" element={<TasksPage />} />}
-
-                {appConfig.enableUsers && <Route path="/users" element={<UsersPage />} />}
-
-                <Route path="*" element={<Navigate to={defaultRedirectPath} replace />} />
-              </Route>
-            </Routes>
-            <Toaster />
-          </TooltipProvider>
-        </ThemeProvider>
-      </Suspense>
-    </BrowserRouter>
+          {/* Редирект с неизвестных маршрутов */}
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </Router>
+      <Toaster />
+    </ThemeProvider>
   );
 }
 
