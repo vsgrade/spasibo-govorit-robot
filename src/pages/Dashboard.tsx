@@ -1,4 +1,3 @@
-
 /**
  * src/pages/Dashboard.tsx
  * Страница панели управления (дашборд).
@@ -16,7 +15,7 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { ArrowRight, Inbox, MessageSquare, Plus, Users } from "lucide-react";
+import { ArrowRight, Inbox, MessageSquare, Plus, Users, Settings } from "lucide-react";
 import { routes } from "@/config/app";
 
 /**
