@@ -3,8 +3,6 @@ import MainLayout from "@/components/layout/MainLayout";
 
 /**
  * Страница базы знаний
- * 
- * @returns {JSX.Element} Компонент страницы базы знаний
  */
 const KnowledgeBasePage = (): JSX.Element => {
   return (

@@ -1,6 +1,5 @@
-
 import React, { createContext, useContext, useState, useEffect, ReactNode } from "react";
-import { DatabaseConfig, DatabaseStatus } from "@/types/database";
+import { DatabaseConfig, DatabaseStatus } from "@/types";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { getStoredDatabaseConfig, createDynamicSupabaseClient } from "@/utils/setupUtils";

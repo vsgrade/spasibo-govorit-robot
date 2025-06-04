@@ -3,8 +3,6 @@ import MainLayout from "@/components/layout/MainLayout";
 
 /**
  * Страница управления контактами
- * 
- * @returns {JSX.Element} Компонент страницы контактов
  */
 const ContactsPage = (): JSX.Element => {
   return (

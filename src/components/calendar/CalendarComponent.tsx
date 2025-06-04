@@ -1,19 +1,19 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-const DatabaseSettings = () => {
+const CalendarComponent = () => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Настройки базы данных</CardTitle>
+        <CardTitle>Календарь</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="text-muted-foreground">
-          Здесь будут настройки подключения к базе данных
+          Здесь будет компонент календаря для планирования задач и встреч
         </div>
       </CardContent>
     </Card>
   );
 };
 
-export default DatabaseSettings;
+export default CalendarComponent;

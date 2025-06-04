@@ -25,9 +25,6 @@ const LoginPage = () => {
   const [adminLogin, setAdminLogin] = useState("");
   const [adminPassword, setAdminPassword] = useState("");
 
-  /**
-   * Обработчик отправки формы входа
-   */
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage(null);
@@ -49,7 +46,6 @@ const LoginPage = () => {
     }
   };
 
-  // Функция для быстрого входа как админ
   const handleQuickLogin = async () => {
     setEmail("admin@example.com");
     setPassword("password");
@@ -70,7 +66,6 @@ const LoginPage = () => {
     }
   };
 
-  // Функция для входа с кастомными админ-данными
   const handleAdminLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -149,14 +144,6 @@ const LoginPage = () => {
                   required
                 />
               </div>
-              <div className="flex items-center justify-between">
-                <Link
-                  to="/forgot-password"
-                  className="text-sm text-primary underline underline-offset-4"
-                >
-                  Забыли пароль?
-                </Link>
-              </div>
             </CardContent>
             <CardFooter className="flex flex-col space-y-4">
               <Button
@@ -176,67 +163,6 @@ const LoginPage = () => {
               >
                 Быстрый вход как админ
               </Button>
-
-              <Dialog open={showAdminPanel} onOpenChange={setShowAdminPanel}>
-                <DialogTrigger asChild>
-                  <Button
-                    type="button"
-                    variant="secondary"
-                    className="w-full"
-                    disabled={isLoading}
-                  >
-                    <Key className="h-4 w-4 mr-2" />
-                    Админ-панель входа
-                  </Button>
-                </DialogTrigger>
-                <DialogContent>
-                  <DialogHeader>
-                    <DialogTitle>Вход администратора</DialogTitle>
-                  </DialogHeader>
-                  <form onSubmit={handleAdminLogin} className="space-y-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="admin-login">Логин администратора</Label>
-                      <Input
-                        id="admin-login"
-                        type="email"
-                        placeholder="admin@yourcompany.com"
-                        value={adminLogin}
-                        onChange={(e) => setAdminLogin(e.target.value)}
-                        required
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="admin-password">Пароль администратора</Label>
-                      <Input
-                        id="admin-password"
-                        type="password"
-                        placeholder="Введите пароль"
-                        value={adminPassword}
-                        onChange={(e) => setAdminPassword(e.target.value)}
-                        required
-                      />
-                    </div>
-                    <div className="flex gap-2">
-                      <Button type="submit" disabled={isLoading} className="flex-1">
-                        {isLoading ? "Вход..." : "Войти как админ"}
-                      </Button>
-                      <Button 
-                        type="button" 
-                        variant="outline" 
-                        onClick={() => setShowAdminPanel(false)}
-                      >
-                        Отмена
-                      </Button>
-                    </div>
-                  </form>
-                  <div className="mt-4 p-3 bg-muted rounded-lg">
-                    <p className="text-sm text-muted-foreground">
-                      <strong>Подсказка:</strong> Используйте любые данные зарегистрированного пользователя. 
-                      Если нет пользователей, сначала зарегистрируйтесь через обычную регистрацию.
-                    </p>
-                  </div>
-                </DialogContent>
-              </Dialog>
               
               <div className="text-sm text-center text-muted-foreground">
                 Нет аккаунта?{" "}
@@ -247,18 +173,6 @@ const LoginPage = () => {
             </CardFooter>
           </form>
         </Card>
-        
-        <div className="mt-4 text-center text-sm text-muted-foreground">
-          <p>
-            Тестовый аккаунт: admin@example.com / password
-          </p>
-          <p className="mt-2">
-            Если аккаунт не существует, создайте его через регистрацию
-          </p>
-          <p className="mt-2 text-xs">
-            💡 Используйте "Админ-панель входа" для входа с любыми учетными данными
-          </p>
-        </div>
       </div>
     </div>
   );

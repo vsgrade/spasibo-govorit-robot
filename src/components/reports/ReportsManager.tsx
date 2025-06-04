@@ -1,19 +1,19 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-const DatabaseSettings = () => {
+const ReportsManager = () => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Настройки базы данных</CardTitle>
+        <CardTitle>Менеджер отчетов</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="text-muted-foreground">
-          Здесь будут настройки подключения к базе данных
+          Здесь будет конструктор отчетов и аналитика
         </div>
       </CardContent>
     </Card>
   );
 };
 
-export default DatabaseSettings;
+export default ReportsManager;

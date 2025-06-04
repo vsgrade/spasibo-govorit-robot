@@ -3,8 +3,6 @@ import MainLayout from "@/components/layout/MainLayout";
 
 /**
  * Страница отчетов и аналитики
- * 
- * @returns {JSX.Element} Компонент страницы отчетов
  */
 const ReportsPage = (): JSX.Element => {
   return (

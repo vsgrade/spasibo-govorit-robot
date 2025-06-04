@@ -3,8 +3,6 @@ import MainLayout from "@/components/layout/MainLayout";
 
 /**
  * Страница управления сделками
- * 
- * @returns {JSX.Element} Компонент страницы сделок
  */
 const DealsPage = (): JSX.Element => {
   return (

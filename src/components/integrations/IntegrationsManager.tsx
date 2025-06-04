@@ -1,19 +1,19 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-const DatabaseSettings = () => {
+const IntegrationsManager = () => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Настройки базы данных</CardTitle>
+        <CardTitle>Управление интеграциями</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="text-muted-foreground">
-          Здесь будут настройки подключения к базе данных
+          Здесь будет управление интеграциями с внешними сервисами
         </div>
       </CardContent>
     </Card>
   );
 };
 
-export default DatabaseSettings;
+export default IntegrationsManager;

@@ -5,8 +5,6 @@ import { useNavigate } from "react-router-dom";
 
 /**
  * Страница CRM-модуля
- * 
- * @returns {JSX.Element} Компонент страницы CRM
  */
 const CRMPage = (): JSX.Element => {
   const navigate = useNavigate();

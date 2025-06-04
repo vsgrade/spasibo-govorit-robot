@@ -12,8 +12,6 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 /**
  * Страница регистрации
- * 
- * @returns {JSX.Element} Компонент страницы регистрации
  */
 const RegisterPage = (): JSX.Element => {
   const navigate = useNavigate();
@@ -25,10 +23,6 @@ const RegisterPage = (): JSX.Element => {
   const [lastName, setLastName] = useState("");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   
-  /**
-   * Обработчик отправки формы регистрации
-   * @param {React.FormEvent} e - Событие формы
-   */
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage(null);
